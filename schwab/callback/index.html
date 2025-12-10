@@ -1,12 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Schwab OAuth Callback</title>
-</head>
-<body>
-  <h1>Schwab OAuth Callback</h1>
-  <p>If you see this page, copy the full URL from your browser's address bar.</p>
-  <p>Look for <code>?code=...</code> at the end and paste that code into your Python script.</p>
-</body>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Schwab OAuth Callback</title>
+    <style>
+      body { font-family: system-ui, -apple-system, sans-serif; padding: 20px; }
+      code { background: #eee; padding: 4px 6px; border-radius: 4px; }
+    </style>
+  </head>
+  <body>
+    <h1>Schwab OAuth Callback</h1>
+    <p id="status">Parsing redirect URL…</p>
+    <p><strong>Authorization code:</strong></p>
+    <p><code id="code">N/A</code></p>
+
+    <script>
+      function getParam(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+      }
+
+      const code  = getParam("code");
+      const state = getParam("state");
+
+      const statusEl = document.getElementById("status");
+      const codeEl   = document.getElementById("code");
+
+      if (code) {
+        statusEl.textContent = "Success. Copy this code into Pythonista.";
+        codeEl.textContent   = code;
+      } else {
+        statusEl.textContent = "No ?code= parameter found in URL.";
+      }
+
+      // Optional: log state so you can compare it in Python
+      if (state) {
+        console.log("state =", state);
+      }
+    </script>
+  </body>
 </html>
